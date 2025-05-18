@@ -1,0 +1,87 @@
+<?php
+session_start();
+include 'config/koneksi.php';
+?>
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sistem Pengelolaan Kelurahan</title>
+    <link rel="stylesheet" href="assets/css/style.css">
+</head>
+<body>
+    <div class="container">
+        <!-- Header -->
+        <header>
+            <div class="logo">
+                <h1>SIPEKEL</h1>
+                <p>Sistem Pengelolaan Kelurahan</p>
+            </div>
+            <?php if(isset($_SESSION['user_id'])): ?>
+                <div class="user-info">
+                    <p>Selamat datang, <?php echo $_SESSION['nama']; ?></p>
+                    <a href="logout.php" class="btn btn-logout">Logout</a>
+                </div>
+            <?php endif; ?>
+        </header>
+
+        <!-- Navigasi -->
+        <nav>
+            <ul>
+                <li><a href="index.php">Beranda</a></li>
+                <?php if(isset($_SESSION['user_id'])): ?>
+                    <?php if($_SESSION['level'] == 'admin' || $_SESSION['level'] == 'petugas'): ?>
+                        <li><a href="penduduk/index.php">Data Penduduk</a></li>
+                        <li><a href="surat/index.php">Manajemen Surat</a></li>
+                        <?php if($_SESSION['level'] == 'admin'): ?>
+                            <li><a href="pegawai/index.php">Data Pegawai</a></li>
+                        <?php endif; ?>
+                    <?php else: ?>
+                        <li><a href="surat/permohonan.php">Permohonan Surat</a></li>
+                        <li><a href="surat/status.php">Status Permohonan</a></li>
+                    <?php endif; ?>
+                    <li><a href="profile.php">Profil</a></li>
+                <?php else: ?>
+                    <li><a href="login.php">Login</a></li>
+                    <li><a href="register.php">Daftar</a></li>
+                <?php endif; ?>
+            </ul>
+        </nav>
+
+        <!-- Konten -->
+        <main>
+            <section class="hero">
+                <h2>Selamat Datang di Sistem Pengelolaan Kelurahan</h2>
+                <p>Sistem informasi terpadu untuk mengelola data kependudukan, pembuatan surat, dan pengelolaan data pegawai kelurahan</p>
+                <?php if(!isset($_SESSION['user_id'])): ?>
+                    <div class="cta-buttons">
+                        <a href="login.php" class="btn btn-primary">Login</a>
+                        <a href="register.php" class="btn btn-secondary">Daftar</a>
+                    </div>
+                <?php endif; ?>
+            </section>
+
+            <section class="features">
+                <div class="feature-card">
+                    <h3>Data Kependudukan</h3>
+                    <p>Mengelola data penduduk kelurahan secara efisien dan terintegrasi</p>
+                </div>
+                <div class="feature-card">
+                    <h3>Layanan Surat</h3>
+                    <p>Memudahkan pengurusan berbagai surat keterangan dan administrasi</p>
+                </div>
+                <div class="feature-card">
+                    <h3>Manajemen Pegawai</h3>
+                    <p>Pengelolaan data pegawai kelurahan dan pembagian tugas</p>
+                </div>
+            </section>
+        </main>
+
+        <!-- Footer -->
+        <footer>
+            <p>&copy; <?php echo date('Y'); ?> Sistem Pengelolaan Kelurahan. Hak Cipta Dilindungi.</p>
+        </footer>
+    </div>
+</body>
+</html>
